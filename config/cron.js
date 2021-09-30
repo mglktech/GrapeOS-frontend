@@ -31,22 +31,22 @@ const syncTaskToEnabledFlag = (task) => {
 };
 
 const createTask = (task) => {
-	if (task.cmd == "pingFiveMServers") {
-		manager.add(task._id.toString(), task.exp, function () {
-			controller.pingFiveMServers();
-		});
-		console.log(`CRON Task ${task.name} has been created. (pingFiveMServer)`);
-	}
-	if (task.cmd == "pingFiveMServerNew") {
-		manager.add(task._id.toString(), task.exp, async function () {
-			controller.pingFiveMServer(task.data.id);
-		});
-		console.log(`CRON Task ${task.name} has been created. (pingFiveMServer)`);
-	}
-	if (task.cmd == "pingScrobbler") {
-		manager.add(task._id.toString(), task.exp, function () {});
-		console.log(`CRON Task ${task.name} has been created. (pingScrobbler)`);
-	}
+	// if (task.cmd == "pingFiveMServers") {
+	// 	manager.add(task._id.toString(), task.exp, function () {
+	// 		//controller.pingFiveMServers();
+	// 	});
+	// 	console.log(`CRON Task ${task.name} has been created. (pingFiveMServer)`);
+	// }
+	// if (task.cmd == "pingFiveMServerNew") {
+	// 	manager.add(task._id.toString(), task.exp, async function () {
+	// 		//controller.pingFiveMServer(task.data.id);
+	// 	});
+	// 	console.log(`CRON Task ${task.name} has been created. (pingFiveMServer)`);
+	// }
+	// if (task.cmd == "pingScrobbler") {
+	// 	manager.add(task._id.toString(), task.exp, function () {});
+	// 	//console.log(`CRON Task ${task.name} has been created. (pingScrobbler)`);
+	// }
 };
 
 const scheduledTasks = [
