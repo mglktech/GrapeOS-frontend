@@ -11,10 +11,10 @@ const logger = require("emberdyn-logger");
 require("ejs");
 require("./config/db");
 require("./config/strategies/discordStrategy");
-require("./services/discord");
-require("./bin/highlife-dragtimes");
-require("./config/cron.js");
-require("./config/newdbconfig").setup();
+//require("./services/discord");
+//require("./bin/highlife-dragtimes");
+//require("./config/cron.js");
+//require("./config/newdbconfig").setup();
 let app = express();
 
 // DEFAULT CONFIGS
