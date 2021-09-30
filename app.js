@@ -10,7 +10,6 @@ const passport = require("passport");
 const logger = require("emberdyn-logger");
 
 require("ejs");
-
 require("./config/db");
 require("./config/strategies/discordStrategy");
 require("./services/discord");
