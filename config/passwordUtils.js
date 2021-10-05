@@ -1,3 +1,5 @@
+// Worth keeping this for creating crypto keys in the future
+
 const crypto = require("crypto");
 
 function genPassword(password) {
