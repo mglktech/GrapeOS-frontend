@@ -13,7 +13,6 @@ require("./config/db");
 require("./config/strategies/discordStrategy");
 //require("./services/discord");
 //require("./config/cron.js");
-//require("./config/newdbconfig").setup();
 let app = express();
 
 // DEFAULT CONFIGS
