@@ -61,6 +61,9 @@ router.get(
 router.get(
 	"/:cfxCode/search/:search",
 	use(async (req, res) => {
+		const server = await FiveMServerModel.findOne({
+			EndPoint: req.params.cfxCode,
+		});
 		FiveMPlayerModel.aggregate([
 			{
 				$search: {
@@ -72,6 +75,9 @@ router.get(
 						},
 					},
 				},
+			},
+			{
+				$match: { servers: [server._id] },
 			},
 		]).then((data) => res.json(data));
 		//let sv_info = await db.getServerByVUrl(req.params.vUrlCode);
