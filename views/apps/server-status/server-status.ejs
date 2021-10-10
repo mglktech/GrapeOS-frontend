@@ -67,26 +67,28 @@
                 return;
             }
             if(isNumeric(inputSearch.value) && inputSearch.value.length <= 4) {
-                resp = await fetch(`/apps/serverStatus/<%=svInfo.EndPoint%>/activity/${inputSearch.value}`).then((data) => {data.json()});
-                wrapper.innerHTML = "";
-                for (activity of resp.activity) {
-                    let time = parseTime(Date.now() - activity.onlineAt);
-                    let playerRow = playerRowTemplate(activity.player._id, activity.sv_id, activity.player.name, time);
-                    wrapper.innerHTML += playerRow;
-                }
-            }
-            else {
-                resp = await fetch(`/apps/serverStatus/<%=svInfo.EndPoint%>/search/${inputSearch.value}`).then(data=> data.json());
-                wrapper.innerHTML = "";
-                for (val of resp) {
-                    let time = "";
-                    let playerRow = playerRowTemplate(val._id, "-", val.name, "-");
-                    wrapper.innerHTML += playerRow;
-                }
-            }
+                resp = await fetch(`/apps/serverStatus/<%=svInfo.EndPoint%>/activity/${inputSearch.value}`).then(data=>
+        data.json());
+        wrapper.innerHTML = "";
+        for (activity of resp.activity) {
+        let time = parseTime(Date.now() - activity.onlineAt);
+        let playerRow = playerRowTemplate(activity.player._id, activity.sv_id, activity.player.name, time);
+        wrapper.innerHTML += playerRow;
+        }
+        }
+        else {
+        resp = await fetch(`/apps/serverStatus/<%=svInfo.EndPoint%>/search/${inputSearch.value}`).then(data=>
+        data.json());
+        wrapper.innerHTML = "";
+        for (val of resp) {
+        let time = "";
+        let playerRow = playerRowTemplate(val._id, " ", val.name, " ");
+        wrapper.innerHTML += playerRow;
+        }
+        }
         //console.log(resp);
         });
-        
+
         let wrapper = document.querySelector("#playerRowWrapper");
         let playerCount = document.querySelector("#playerCount");
         let circ = document.querySelector("#statusCircle");
