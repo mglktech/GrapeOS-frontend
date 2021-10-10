@@ -15,7 +15,14 @@ const mySchema = new Schema({
 	},
 	Flags: {
 		tracked: Boolean,
+		debugMode: Boolean,
 		public: Boolean,
+		lastSeen: Number,
+		state: String,
+		ready: {
+			type: Boolean,
+			default: true,
+		},
 	},
 	Data: {
 		clients: Number,
@@ -58,11 +65,8 @@ model.getById = (id) => {
 	//console.log("new method");
 	return model.findById(id);
 };
-model.fetchByIP = (ip) => {
-	return model.findOne({ ip });
-};
 model.fetchByCfx = (cfxCode) => {
-	return model.findOne({ EndPoint: cfxCode });
+	return model.findOne({ EndPoint: cfxCode }).lean();
 };
 
 model.create = (item) => {
@@ -113,45 +117,3 @@ function doLog(service, text) {
 	console.log(logTxt);
 }
 module.exports = model;
-
-// const myOldSchema = new Schema(
-// 	{
-// 		ip: String,
-// 		online: Boolean,
-// 		info: {
-// 			enhancedHostSupport: Boolean,
-// 			icon: String,
-// 			resources: [String],
-// 			server: String,
-// 			vars: {
-// 				type: Map,
-// 				of: String,
-// 			},
-// 			version: Number,
-// 		},
-// 		players: [
-// 			{
-// 				current_id: Number,
-// 				name: String,
-// 				online: Boolean,
-// 				ping: Number,
-// 				identifiers: [String],
-// 				lastCameOnline: Number,
-// 				activity: [
-// 					{
-// 						onlineAt: Number,
-// 						offlineAt: Number,
-// 						duration: {
-// 							type: Number,
-// 							default: function () {
-// 								return this.offlineAt - this.onlineAt;
-// 							},
-// 						},
-// 						session_id: Number,
-// 					},
-// 				],
-// 			},
-// 		],
-// 	},
-// 	{ timestamps: true }
-// );

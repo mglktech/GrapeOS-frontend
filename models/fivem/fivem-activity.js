@@ -34,6 +34,7 @@ model.create = (params) => {
 model.getAllOnline = (server) => {
 	return model
 		.find({ server, online: true })
+		.lean()
 		.populate("player")
 		.sort({ sv_id: "desc" });
 };

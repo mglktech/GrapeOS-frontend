@@ -22,9 +22,27 @@ router.get(
 router.get(
 	"/:cfxCode/activity",
 	use(async (req, res) => {
-		let svInfo = await FiveMServerModel.fetchByCfx(req.params.cfxCode);
-		let activity = await FiveMActivityModel.getAllOnline(svInfo._id);
-		res.json(activity);
+		let info = await FiveMServerModel.fetchByCfx(req.params.cfxCode);
+		let activity = await FiveMActivityModel.getAllOnline(info._id);
+		res.json({ info, activity });
+		//let sv_info = await db.getServerByVUrl(req.params.vUrlCode);
+		// deliver as Information window
+	})
+);
+router.get(
+	"/:cfxCode/activity/:search",
+	use(async (req, res) => {
+		let server = await FiveMServerModel.findOne({
+			EndPoint: req.params.cfxCode,
+		});
+		let activity = await FiveMActivityModel.find({
+			server,
+			online: true,
+			sv_id: req.params.search,
+		})
+			.lean()
+			.populate("player");
+		res.json({ info: server, activity });
 		//let sv_info = await db.getServerByVUrl(req.params.vUrlCode);
 		// deliver as Information window
 	})
@@ -41,12 +59,24 @@ router.get(
 );
 
 router.get(
-	"/:cfxCode/search",
+	"/:cfxCode/search/:search",
 	use(async (req, res) => {
+		FiveMPlayerModel.aggregate([
+			{
+				$search: {
+					index: "playerSearch",
+					text: {
+						query: `${req.params.search}`,
+						path: {
+							wildcard: "*",
+						},
+					},
+				},
+			},
+		]).then((data) => res.json(data));
 		//let sv_info = await db.getServerByVUrl(req.params.vUrlCode);
 		// deliver as searchable content window
-		doError(req, res, 404, "We're still working on this page!");
-		return;
+		//doError(req, res, 404, "We're still working on this page!");
 	})
 );
 
