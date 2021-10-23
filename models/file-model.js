@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const funcs = require("../bin/funcs/mongoose-funcs");
+const mongoose = require('mongoose');
+const funcs = require('./bin/mongoose-funcs');
 const Schema = mongoose.Schema;
-const modelName = "file";
+const modelName = 'file';
 const mySchema = new Schema({
 	name: String,
 	type: String,
@@ -19,7 +19,7 @@ const removeDefaultDuplicates = async (items) => {
 		let exists = await model.exists(item);
 		if (!exists) {
 			console.log(
-				"[file-modal] -> Source code has changed for Default files. Clearing old files..."
+				'[file-modal] -> Source code has changed for Default files. Clearing old files...'
 			);
 			let oldModels = await model.deleteMany({
 				name: item.name,
@@ -35,15 +35,15 @@ const removeDefaultDuplicates = async (items) => {
 model.setup = async () => {
 	let icons = await default_icons();
 	await removeDefaultDuplicates(icons);
-	let default_icon = await model.findOne({ name: "_file", type: "icon" });
+	let default_icon = await model.findOne({ name: '_file', type: 'icon' });
 	let shortcuts = await default_shortcuts(default_icon._id);
 	await removeDefaultDuplicates(shortcuts);
 	const adminFiles = await model.find({
-		type: "shortcut",
-		"data.requireAdmin": true,
-		"data.desktopVisible": false,
+		type: 'shortcut',
+		'data.requireAdmin': true,
+		'data.desktopVisible': false,
 	});
-	const folder_icon = await model.findOne({ name: "_folder", type: "icon" });
+	const folder_icon = await model.findOne({ name: '_folder', type: 'icon' });
 	let adminFolder = await default_folders(folder_icon._id);
 	for (let file of adminFiles) {
 		adminFolder[0].data.files.push(file._id);
@@ -67,113 +67,113 @@ files: [String], <-- ObjectIDs of each file contined within the folder
 */
 
 const default_shortcuts = async (default_icon = null) => {
-	let wrench_icon = await model.findOne({ name: "_wrench", type: "icon" });
+	let wrench_icon = await model.findOne({ name: '_wrench', type: 'icon' });
 	if (!default_icon) {
 		console.log(
-			"[CRITICAL ERROR]: setupShortcuts was not provided a default_icon!"
+			'[CRITICAL ERROR]: setupShortcuts was not provided a default_icon!'
 		);
 		return null;
 	}
 	return [
 		{
-			name: "Task Scheduler",
-			type: "shortcut",
+			name: 'Task Scheduler',
+			type: 'shortcut',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: wrench_icon,
 				requireAuth: true,
 				requireAdmin: true,
 				desktopVisible: false,
 				winbox: {
-					title: "Task Scheduler",
-					width: "400",
-					height: "520",
-					url: "/bin/tasks/view",
+					title: 'Task Scheduler',
+					width: '400',
+					height: '520',
+					url: '/bin/tasks/view',
 				},
 			},
 		},
 		{
-			name: "Icon Manager",
-			type: "shortcut",
+			name: 'Icon Manager',
+			type: 'shortcut',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: wrench_icon,
 				requireAuth: true,
 				requireAdmin: true,
 				desktopVisible: false,
 				winbox: {
-					title: "Icon Manager",
-					width: "400",
-					height: "520",
-					url: "/bin/icons/view",
+					title: 'Icon Manager',
+					width: '400',
+					height: '520',
+					url: '/bin/icons/view',
 				},
 			},
 		},
 		{
-			name: "Shortcut Manager",
-			type: "shortcut",
+			name: 'Shortcut Manager',
+			type: 'shortcut',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: wrench_icon,
 				requireAuth: true,
 				requireAdmin: true,
 				desktopVisible: false,
 				winbox: {
-					title: "Shortcut Manager",
-					width: "400",
-					height: "520",
-					url: "/bin/shortcuts/view",
+					title: 'Shortcut Manager',
+					width: '400',
+					height: '520',
+					url: '/bin/shortcuts/view',
 				},
 			},
 		},
 		{
-			name: "Folder Manager",
-			type: "shortcut",
+			name: 'Folder Manager',
+			type: 'shortcut',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: wrench_icon,
 				requireAuth: true,
 				requireAdmin: true,
 				desktopVisible: false,
 				winbox: {
-					title: "Folder Manager",
-					width: "400",
-					height: "520",
-					url: "/bin/folders/view",
+					title: 'Folder Manager',
+					width: '400',
+					height: '520',
+					url: '/bin/folders/view',
 				},
 			},
 		},
 		{
-			name: "FiveM Server Manager",
-			type: "shortcut",
+			name: 'FiveM Server Manager',
+			type: 'shortcut',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: wrench_icon,
 				requireAuth: true,
 				requireAdmin: true,
 				desktopVisible: false,
 				winbox: {
-					title: "FiveM Server Manager",
-					width: "400",
-					height: "520",
-					url: "/bin/fiveM/server/view/all/html",
+					title: 'FiveM Server Manager',
+					width: '400',
+					height: '520',
+					url: '/bin/fiveM/server/view/all/html',
 				},
 			},
 		},
 		{
-			name: "About",
-			type: "shortcut",
+			name: 'About',
+			type: 'shortcut',
 			data: {
-				group: "default",
+				group: 'default',
 				icon: default_icon,
 				requireAuth: false,
 				requireAdmin: false,
 				desktopVisible: true,
 				winbox: {
-					title: "About Me",
-					width: "1024",
-					height: "768",
-					url: "/about",
+					title: 'About Me',
+					width: '1024',
+					height: '768',
+					url: '/about',
 				},
 			},
 		},
@@ -183,16 +183,16 @@ const default_shortcuts = async (default_icon = null) => {
 const default_folders = (default_icon = null) => {
 	if (!default_icon) {
 		console.log(
-			"[CRITICAL ERROR]: setupShortcuts was not provided a default_icon!"
+			'[CRITICAL ERROR]: setupShortcuts was not provided a default_icon!'
 		);
 		return null;
 	}
 	return [
 		{
-			name: "Admin Tools",
-			type: "folder",
+			name: 'Admin Tools',
+			type: 'folder',
 			data: {
-				group: "Admin",
+				group: 'Admin',
 				icon: default_icon,
 				requireAuth: true,
 				requireAdmin: true,
@@ -205,39 +205,39 @@ const default_folders = (default_icon = null) => {
 const default_icons = () => {
 	return [
 		{
-			name: "_default",
-			type: "icon",
+			name: '_default',
+			type: 'icon',
 			data: {
-				group: "default",
-				iconType: "icon",
-				iconTypeData: "fa fa-user",
+				group: 'default',
+				iconType: 'icon',
+				iconTypeData: 'fa fa-user',
 			},
 		},
 		{
-			name: "_folder",
-			type: "icon",
+			name: '_folder',
+			type: 'icon',
 			data: {
-				group: "default",
-				iconType: "icon",
-				iconTypeData: "fa fa-folder-open",
+				group: 'default',
+				iconType: 'icon',
+				iconTypeData: 'fa fa-folder-open',
 			},
 		},
 		{
-			name: "_file",
-			type: "icon",
+			name: '_file',
+			type: 'icon',
 			data: {
-				group: "default",
-				iconType: "icon",
-				iconTypeData: "fa fa-file",
+				group: 'default',
+				iconType: 'icon',
+				iconTypeData: 'fa fa-file',
 			},
 		},
 		{
-			name: "_wrench",
-			type: "icon",
+			name: '_wrench',
+			type: 'icon',
 			data: {
-				group: "default",
-				iconType: "icon",
-				iconTypeData: "fa fa-wrench",
+				group: 'default',
+				iconType: 'icon',
+				iconTypeData: 'fa fa-wrench',
 			},
 		},
 	];
@@ -277,13 +277,13 @@ model.removeFile = (_id) => {
 	model.findByIdAndRemove(_id);
 };
 model.getShortcut = async (filter = {}) => {
-	Object.assign(filter, { type: "shortcut" });
+	Object.assign(filter, { type: 'shortcut' });
 	let sc = await model.getFile(filter);
 	sc.icon = await model.getFile({ _id: sc.data.icon });
 	return sc;
 };
 model.getShortcuts = async (filter = {}) => {
-	Object.assign(filter, { type: "shortcut" });
+	Object.assign(filter, { type: 'shortcut' });
 	let scs = await model.getFiles(filter);
 	for (let i = 0; i < scs.length; i++) {
 		// forEach loops don't like to behave asynchronously.
@@ -293,24 +293,24 @@ model.getShortcuts = async (filter = {}) => {
 	return scs;
 };
 model.getFolder = async (filter) => {
-	Object.assign(filter, { type: "folder" });
+	Object.assign(filter, { type: 'folder' });
 	let fd = await model.getFile(filter);
-	fd.icon = await model.getFile({ name: "_folder", type: "icon" });
+	fd.icon = await model.getFile({ name: '_folder', type: 'icon' });
 	return fd;
 };
 model.getFolders = async (filter) => {
-	Object.assign(filter, { type: "folder" });
+	Object.assign(filter, { type: 'folder' });
 	let fds = await model.getFiles(filter);
 	for (let i = 0; i < fds.length; i++) {
 		// forEach loops don't like to behave asynchronously.
-		fds[i].icon = await model.getFile({ name: "_folder", type: "icon" });
+		fds[i].icon = await model.getFile({ name: '_folder', type: 'icon' });
 	}
 	return fds;
 };
 model.addIcon = (data) => {
 	new model({
 		name: data.name,
-		type: "icon",
+		type: 'icon',
 		data: {
 			iconType: data.iconType,
 			iconTypeData: data.iconTypeData,

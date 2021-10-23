@@ -1,17 +1,19 @@
-const mongoose = require("mongoose");
-const logger = require("emberdyn-logger");
+const mongoose = require('mongoose');
+//const logger = require("emberdyn-logger");
 const Schema = mongoose.Schema;
 
-const modelName = "fivem-activity";
+const modelName = 'fivem-activity';
 const mySchema = new Schema(
 	{
 		server: {
 			type: Schema.ObjectId,
-			ref: "fivem-server",
+			ref: 'fivem-server',
+			required: true,
 		},
 		player: {
 			type: Schema.ObjectId,
-			ref: "fivem-player",
+			ref: 'fivem-player',
+			required: true,
 		},
 		onlineAt: Number,
 		offlineAt: Number,
@@ -34,17 +36,15 @@ model.create = (params) => {
 model.getAllOnline = (server) => {
 	return model
 		.find({ server, online: true })
-		.lean()
-		.populate("player")
-		.sort({ sv_id: "desc" });
+		.populate('player')
+		.sort({ sv_id: 'desc' });
 };
 
-model.finish = (_id) => {
-	const now = Date.now();
+model.finish = (_id, offlineAt = Date.now()) => {
 	model
 		.findByIdAndUpdate(_id, {
 			online: false,
-			offlineAt: now,
+			offlineAt,
 		})
 		.exec();
 	// .populate("player")

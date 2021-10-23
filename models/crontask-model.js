@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const funcs = require("../bin/funcs/mongoose-funcs");
-const activity = require("./activity-model");
+const mongoose = require('mongoose');
+const funcs = require('./bin/mongoose-funcs');
+//const activity = require("./activity-model");
 const Schema = mongoose.Schema;
-const modelName = "Crontask";
+const modelName = 'Crontask';
 const mySchema = new Schema(
 	{
 		name: String,
@@ -32,7 +32,7 @@ model.toggle = async (_id) => {
 	if (cron) {
 		cron.enabled = !cron.enabled;
 		if (cron.enabled == false) {
-			activity.finishAll(cron.data.get("id"));
+			//activity.finishAll(cron.data.get("id"));
 		}
 		cron.save();
 	}
@@ -41,14 +41,14 @@ model.toggle = async (_id) => {
 
 model.add = (cron) => {
 	const newCronJob = new model(cron);
-	console.log("New CRON:");
+	console.log('New CRON:');
 	console.log(newCronJob);
 	newCronJob.save();
 };
 
 model.delete = (_id) => {
 	model.findByIdAndRemove(_id).then((res) => {
-		console.log("CRON Removed: " + res.name);
+		console.log('CRON Removed: ' + res.name);
 	});
 };
 

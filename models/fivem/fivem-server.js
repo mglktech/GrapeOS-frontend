@@ -4,9 +4,9 @@
 // Associate roles with discord accounts
 // Be able to check almost-live up to date information on each player on the server and their associated roles.
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const modelName = "fivem-server";
+const modelName = 'fivem-server';
 
 const mySchema = new Schema({
 	EndPoint: {
@@ -15,9 +15,9 @@ const mySchema = new Schema({
 	},
 	Flags: {
 		tracked: Boolean,
-		debugMode: Boolean,
 		public: Boolean,
 		lastSeen: Number,
+		debugMode: Boolean,
 		state: String,
 		ready: {
 			type: Boolean,
@@ -71,7 +71,7 @@ model.fetchByCfx = (cfxCode) => {
 
 model.create = (item) => {
 	return new model(item).save().then((res) => {
-		doLog("fivem-server", `New Model Created. ${res._id}`);
+		doLog('fivem-server', `New Model Created. ${res._id}`);
 		return res;
 	});
 };
