@@ -11,7 +11,7 @@ const use = (fn) => (req, res, next) => {
 	Promise.resolve(fn(req, res, next)).catch(next);
 };
 
-router.get('/addServer/:ip/:discordID', use(api.addServer)); // // MOVE THIS TO PROTECTED ROUTES
+//router.get('/addServer/:ip/:discordID', use(api.addServer)); // // MOVE THIS TO PROTECTED ROUTES
 //router.get("/pingServer/:id", api.fivem_get);
 router.get('/playerInfo/:vanityUrlCode', use(api.db_onlinePlayers_get)); // old!
 // FIVEM ROUTES
