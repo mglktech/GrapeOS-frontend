@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
@@ -31,7 +31,16 @@ const userSchema = new Schema(
 				},
 			],
 		},
+		lastfmUser: String,
+		lastfmWeeklyTrackChart: {},
+		lastfmRecentTrack: {},
 		admin: Boolean,
+		desktop: {
+			files: Array,
+		},
+		steamID: String,
+		steamPlayerSummary: {},
+		steamRecentGames: [],
 	},
 	{
 		timestamps: true,
@@ -39,7 +48,7 @@ const userSchema = new Schema(
 );
 
 // create model based on schema
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 User.setup = async () => {
 	// Keeping here in case I need to setup any default users again

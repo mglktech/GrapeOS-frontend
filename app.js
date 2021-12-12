@@ -43,14 +43,18 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: true })); // EXTENDED URLENCODING FOR FORMS
 
 // Index Routing
-app.use('/', require('./routes/top'));
+const use = (fn) => (req, res, next) => {
+	Promise.resolve(fn(req, res, next)).catch(next);
+}; // Catch helper function
+
+app.use('/', use(require('./routes/top')));
 //app.use("/public", require("./routes/public"));
 //app.use("/account", require("./routes/account"));
-app.use('/apps', require('./routes/apps'));
-app.use('/auth', require('./routes/auth'));
-app.use('/api', require('./routes/api'));
+app.use('/apps', use(require('./routes/apps')));
+app.use('/auth', use(require('./routes/auth')));
+app.use('/api', use(require('./routes/api')));
 //app.use("/articles", require("./routes/articles"));
-app.use('/bin', require('./routes/bin'));
+app.use('/bin', use(require('./routes/bin')));
 //app.use("/protected", require("./routes/protected"));
 //app.use("/projects", require("./routes/projects"));
 //app.use("/demos", require("./routes/demos"));

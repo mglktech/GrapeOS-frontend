@@ -1,6 +1,8 @@
 const CronJobManager = require('cron-job-manager');
 const cronTaskModel = require('../../models/crontask-model');
-const controller = require('../controllers/cron');
+const FiveMController = require('../controllers/cron/fiveM');
+const LastFMController = require('../controllers/cron/lastfm');
+const SteamController = require('../controllers/cron/steam');
 //const db = require("../config/db");
 
 const syncTasks = async () => {
@@ -30,11 +32,31 @@ const syncTaskToEnabledFlag = (task) => {
 
 const createTask = async (task) => {
 	if (task.cmd == 'pingFiveMServers') {
-		controller.resetReadyFlags();
+		FiveMController.resetReadyFlags();
 		manager.add(task._id.toString(), task.exp, function () {
-			controller.pingFiveMServers();
+			FiveMController.pingFiveMServers();
 		});
 		console.log(`CRON Task ${task.name} has been created. (${task.cmd})`);
+	}
+	if (task.cmd == 'syncTopWeeklyTracks') {
+		manager.add(task._id.toString(), task.exp, function () {
+			LastFMController.syncTopWeeklyTracks();
+		});
+	}
+	if (task.cmd == 'syncCurrentlyPlaying') {
+		manager.add(task._id.toString(), task.exp, function () {
+			LastFMController.syncCurrentlyPlaying();
+		});
+	}
+	if (task.cmd == 'syncSteamPlayerSummary') {
+		manager.add(task._id.toString(), task.exp, function () {
+			SteamController.syncUserSummary();
+		});
+	}
+	if (task.cmd == 'syncSteamRecentGames') {
+		manager.add(task._id.toString(), task.exp, function () {
+			SteamController.syncUserRecentGames();
+		});
 	}
 };
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head")%>
+</head>
+
+<body>
+  <%- include("../partials/NavBar")%>
+  <!-- Body Content -->
+  <div>
+    <div class="container border rounded border-dark shadow bg-bs-dark my-3 text-light">
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-center"><img class="img-fluid px-2" src="assets/img/bi_discord.svg" style="width: 3.5rem;">
+            <h1 class="text-center m-2 fw-bold">Hold up...</h1>
+          </div>
+          <p class="text-center m-2 fst-italic">The Login process is intended for site administrators only. It uses OAuth2 with Discord to determine this.<br>If you are not a site administrator, you do not need to login.</p>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="col d-flex justify-content-center"><a class="btn btn-secondary" type="button" href="/">Go back</a></div>
+        <div class="col d-flex justify-content-center"><a class="btn btn-primary" type="button" href="/auth/discord/login">Continue</a></div>
+      </div>
+    </div>
+  </div>
+  <%- include("../scripts/defaultScripts")%>
+
+</body>
+
+</html>

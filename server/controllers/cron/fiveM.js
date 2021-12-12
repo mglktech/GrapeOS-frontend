@@ -1,17 +1,18 @@
-const FiveMServerModel = require('../../models/fivem/fivem-server');
-const FiveMPlayerModel = require('../../models/fivem/fivem-player');
-const FiveMActivityModel = require('../../models/fivem/fivem-activity');
-const FiveMService = require('../config/fiveM');
+const FiveMServerModel = require('../../../models/fivem/fivem-server');
+const FiveMPlayerModel = require('../../../models/fivem/fivem-player');
+const FiveMActivityModel = require('../../../models/fivem/fivem-activity');
+const verboseModel = require('../../../models/fivem/fivem-verbose');
+const FiveMService = require('../../config/fiveM');
 const maxRetries = process.env.maxRetries || 3;
 
-const resetReadyFlags = async () => {
+module.exports.resetReadyFlags = async () => {
 	let sv_unreadys = await FiveMServerModel.find({ 'Flags.ready': false });
 	for (sv of sv_unreadys) {
 		FiveMServerModel.findByIdAndUpdate(sv._id, { 'Flags.ready': true }).exec();
 	}
 };
 
-const pingFiveMServers = () => {
+module.exports.pingFiveMServers = () => {
 	FiveMServerModel.find({ 'Flags.tracked': true }).then((servers) => {
 		servers.forEach(async (server) => {
 			if (typeof server.Flags.ready == 'undefined') {
@@ -243,7 +244,6 @@ async function DisposeOldActivities(server, playerInfo, dbActivities) {
 
 async function handleDebugMode(flag, server, sv_playerData) {
 	if (flag === true) {
-		const verboseModel = require('../../models/fivem/fivem-verbose');
 		//console.log(`DATA FOR ${server}`);
 		//console.log(sv_playerData);
 		let playerData = [];
@@ -297,5 +297,3 @@ const MapIdentifiers = (identifiers) => {
 // 	let b = Date.now();
 // 	console.log(`[CRON timeIt] [${cmd} - ${svName}] took ${b - a}ms to complete`);
 // }
-
-module.exports = { pingFiveMServers, resetReadyFlags };

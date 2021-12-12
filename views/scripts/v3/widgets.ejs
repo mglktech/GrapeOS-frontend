@@ -1,0 +1,34 @@
+<script name="Spotify Widget">
+  const spotifyWidget = {
+    trackArt: document.querySelector("#trackart"),
+    playing: document.querySelector("#txtPlaying"),
+    trackTitle: document.querySelector("#tracktitle"),
+    trackArtist: document.querySelector("#trackartist")
+  }
+  const doNowPlaying = (data) => {
+    if (data.recentlyPlayed["@attr"] != undefined) {
+      if (data.recentlyPlayed["@attr"].nowplaying) {
+        spotifyWidget.playing.innerHTML = "Now Playing";
+        return;
+      }
+    }
+    spotifyWidget.playing.innerHTML = "Recently Played";
+  }
+  const getSetTrack = async () => {
+    let data = await fetch('/apps/spotify/data').then(res => res.json());
+    doNowPlaying(data);
+    spotifyWidget.trackArt.src = data.recentlyPlayed.image[2]['#text'];
+    spotifyWidget.trackTitle.innerHTML = data.recentlyPlayed.name;
+    spotifyWidget.trackTitle.href = data.recentlyPlayed.url;
+    spotifyWidget.trackArtist.innerHTML = data.recentlyPlayed.artist["#text"];
+    spotifyWidget.trackArtist.href = data.recentlyPlayed.url;
+  }
+  getSetTrack();
+  setInterval(getSetTrack, 10 * 1000);
+</script>
+
+<script name="Steam">
+  const lastfmWidget = {
+
+  }
+</script>

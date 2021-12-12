@@ -4,27 +4,22 @@ module.exports.isAuth = async (req, res, next) => {
 		return;
 	}
 	console.log(
-		"A User tried to load a page that was Auth restricted. Their session details are as follows: "
+		'A User tried to load a page that was Auth restricted. Their session details are as follows: '
 	);
 	console.log(req.session);
-	res.redirect("/auth/login");
+	res.redirect('/auth/login');
 };
 module.exports.isAdmin = async (req, res, next) => {
-	if (req.isAuthenticated() && isAdmin(req.user)) {
+	if (req.isAuthenticated() && req.user.admin) {
 		next();
 		return;
 	}
 	console.log(
-		"A User tried to load a page that was Admin restricted. Their session details are as follows: "
+		'A User tried to load a page that was Admin restricted. Their session details are as follows: '
 	);
 	res
 		.status(404)
 		.send(
-			"You are not authorised to view this content. (you are not an admin)"
+			'You are not authorised to view this content. (you are not an admin)'
 		);
-};
-const isAdmin = (user) => {
-	const AdminRoleID = process.env.GrapeOSSuperUserRoleID;
-	//console.log(user);
-	return true;
 };

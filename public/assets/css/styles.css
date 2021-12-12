@@ -8,6 +8,8 @@ body {
 	-webkit-tap-highlight-color: transparent;
 }
 
+
+
 header.masthead {
 	position: relative;
 	overflow: hidden;
@@ -68,12 +70,30 @@ header.masthead .bg-circle-3 {
 	right: 5%;
 }
 
+.span-game-genre {
+	color: var(--gray);
+	font-size: 0.8rem;
+	padding: 2px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 10%;
+	line-height: 0.8rem;
+	margin: 2px;
+}
+
+
 header.masthead .bg-circle-4 {
 	height: 30rem;
 	width: 30rem;
 	top: -5rem;
 	right: 35%;
 }
+
+.bg-bs-dark {
+	background: var(--bs-dark);
+}
+
+
 .bg-black {
 	background: #000000;
 }
