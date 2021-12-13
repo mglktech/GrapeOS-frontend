@@ -1,34 +1,98 @@
-<script name="Spotify Widget">
+<script>
   const spotifyWidget = {
     trackArt: document.querySelector("#trackart"),
     playing: document.querySelector("#txtPlaying"),
     trackTitle: document.querySelector("#tracktitle"),
     trackArtist: document.querySelector("#trackartist")
   }
-  const doNowPlaying = (data) => {
-    if (data.recentlyPlayed["@attr"] != undefined) {
-      if (data.recentlyPlayed["@attr"].nowplaying) {
-        spotifyWidget.playing.innerHTML = "Now Playing";
+  const steamWidget = {
+    nickname: document.querySelector("#steam-nickname"),
+    onlineState: document.querySelector("#steam-onlinestate"),
+    profilePicture: document.querySelector("#steam-profile-picture"),
+    row: document.querySelector("#row-steamCurrentlyPlaying"),
+    img: document.querySelector("#steam-playing-splash"),
+    title: document.querySelector("#steam-playing-title"),
+    author: document.querySelector("#steam-playing-author"),
+    genres: document.querySelector("#steam-playing-genres"),
+  }
+  const updateSpotifyWidget = (streamData) => {
+    const doNowPlaying = (data) => { // when a song is being played, the API includes an @attr field with nowplaying set to true. This function takes advantage of this.
+      if (data.spotify_recentlyPlayed["@attr"]) {
+        if (data.spotify_recentlyPlayed["@attr"].nowplaying) {
+          spotifyWidget.playing.innerHTML = "Now Playing";
+          return;
+        }
+      }
+      spotifyWidget.playing.innerHTML = "Recently Played";
+    }
+    doNowPlaying(streamData);
+    spotifyWidget.trackArt.src = streamData.spotify_recentlyPlayed.image[2]['#text'];
+    spotifyWidget.trackTitle.innerHTML = streamData.spotify_recentlyPlayed.name;
+    spotifyWidget.trackTitle.href = streamData.spotify_recentlyPlayed.url;
+    spotifyWidget.trackArtist.innerHTML = streamData.spotify_recentlyPlayed.artist["#text"];
+    spotifyWidget.trackArtist.href = streamData.spotify_recentlyPlayed.url;
+  }
+  const updateSteamWidget = (streamData) => {
+    const playerSummary = streamData.steam_playerSummary;
+    steamWidget.nickname.innerHTML = playerSummary.nickname;
+    steamWidget.profilePicture.src = playerSummary.avatar.medium;
+    const parseOnlineState = (state) => {
+      // 0 - Offline, 1 - Online, 2 - Busy, 3 - Away, 4 - Snooze, 5 - looking to trade, 6 - looking to play.
+      if (state === 0) {
+        return "Offline";
+      }
+      if (state === 1) {
+        return "Online";
+      }
+      if (state === 2) {
+        return "Busy";
+      }
+      if (state === 3) {
+        return "Away";
+      }
+      if (state === 4) {
+        return "Snooze";
+      }
+      if (state === 5) {
+        return "Looking to Play"
+      }
+      if (state === 6) {
+        return "Looking to Trade"
+      }
+
+    }
+    steamWidget.onlineState.innerHTML = parseOnlineState(playerSummary.personaState);
+    const doNowPlayingGame = (game) => {
+      if (game) {
+        steamWidget.row.classList.remove("visually-hidden");
+        steamWidget.img.src = game.gameDetails.header_image;
+        steamWidget.title.innerHTML = game.gameDetails.name;
+        steamWidget.author.innerHTML = game.gameDetails.developers[0];
+        // Construct Genre spans and add them to genres element as children
+        steamWidget.genres.textContent = "";
+        game.gameDetails.genres.forEach(genre => {
+          const child = document.createElement("span");
+          child.classList.add("span-game-genre");
+          child.innerHTML = genre.description;
+          steamWidget.genres.appendChild(child);
+        });
         return;
       }
+      if (!steamWidget.row.classList.contains("visually-hidden")) {
+        steamWidget.row.classList.add("visually-hidden");
+      }
     }
-    spotifyWidget.playing.innerHTML = "Recently Played";
-  }
-  const getSetTrack = async () => {
-    let data = await fetch('/apps/spotify/data').then(res => res.json());
-    doNowPlaying(data);
-    spotifyWidget.trackArt.src = data.recentlyPlayed.image[2]['#text'];
-    spotifyWidget.trackTitle.innerHTML = data.recentlyPlayed.name;
-    spotifyWidget.trackTitle.href = data.recentlyPlayed.url;
-    spotifyWidget.trackArtist.innerHTML = data.recentlyPlayed.artist["#text"];
-    spotifyWidget.trackArtist.href = data.recentlyPlayed.url;
-  }
-  getSetTrack();
-  setInterval(getSetTrack, 10 * 1000);
-</script>
-
-<script name="Steam">
-  const lastfmWidget = {
+    doNowPlayingGame(playerSummary.game || null);
 
   }
+  const fetchStreamData = () => {
+    return fetch('/api/info/stream').then(res => res.json());
+  }
+  const getSetStreamInfo = async () => {
+    const streamData = await fetchStreamData();
+    updateSpotifyWidget(streamData);
+    updateSteamWidget(streamData);
+  }
+  getSetStreamInfo();
+  setInterval(getSetStreamInfo, 10 * 1000);
 </script>

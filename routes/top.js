@@ -4,35 +4,8 @@ const shortcuts = require('../models/shortcut-model');
 const files = require('../models/file-model');
 const users = require('../models/user-model');
 const games = require('../models/steamgame-model');
-
-router.get('/', async (req, res) => {
-	// Esentially I would like this req to pull ALL main data from the database at once instead of in seperate requests
-	// I can then user this func to render with all data at once
-	const data = await users
-		.findOne(
-			{ steamID: process.env.steamClientID },
-			'lastfmWeeklyTrackChart steamRecentGames'
-		)
-		.lean();
-	let recentGames = [];
-	if (data.steamRecentGames) {
-		for await (game of data.steamRecentGames) {
-			const gameInfo = await games
-				.findOne(
-					{ appID: game.appID },
-					'gameDetails.header_image gameDetails.name gameDetails.developers gameDetails.genres'
-				)
-				.lean();
-			if (gameInfo) {
-				recentGames.push(gameInfo);
-			}
-		}
-	}
-	res.render('pages/main', {
-		lastfmWeeklyTrackChart: data.lastfmWeeklyTrackChart,
-		steamRecentGames: recentGames,
-	});
-});
+const controller = require('../controllers/top');
+router.get('/', controller.loadMain);
 // router.get("/welcome", (req, res) => {
 // 	res.render("pages/welcome");
 // });
