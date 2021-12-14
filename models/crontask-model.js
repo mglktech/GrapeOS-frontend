@@ -5,10 +5,12 @@ const Schema = mongoose.Schema;
 const modelName = 'Crontask';
 const mySchema = new Schema(
 	{
-		name: String,
+		module: String,
+		title: String,
+		desc: String,
 		exp: String,
 		cmd: String,
-		data: { type: Map, of: String },
+		data: {},
 		enabled: Boolean,
 	},
 	{

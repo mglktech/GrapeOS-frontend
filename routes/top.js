@@ -10,6 +10,14 @@ router.get('/', controller.loadMain);
 // 	res.render("pages/welcome");
 // });
 router.get('/login', (req, res) => res.render('pages/loginPreSplash'));
+router.get('/admin', (req, res) => {
+	if (req.isAuthenticated() && req.user.admin) {
+		res.render('pages/admin');
+		return;
+	}
+	res.sendStatus(404);
+});
+
 router.get('/home', async (req, res) => {
 	let scs = [];
 	let fds = [];

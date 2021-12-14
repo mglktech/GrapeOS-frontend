@@ -1,12 +1,9 @@
 const steamController = require('./controllers/cron/steam');
-module.exports.setup = async () => {
-	console.log(`Setup Started.`);
-	// This section is for running functions on first time load, to ensure database updates etc.
-	console.log(`Setup Complete.`);
-};
+const cronConfig = require('./config/cron');
 require('../config/db');
 //require('./bin/highlife-dragtimes');
-require('./config/cron.js'); // Start running CRON tasks
+cronConfig.setup();
+require('./controllers/cron.js'); // Start running CRON tasks
 require('dotenv').config();
 
 //client.getPlayerSummaries().then((result) => console.log(result));

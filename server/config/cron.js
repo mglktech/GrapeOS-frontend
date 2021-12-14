@@ -1,68 +1,63 @@
-const CronJobManager = require('cron-job-manager');
 const cronTaskModel = require('../../models/crontask-model');
-const FiveMController = require('../controllers/cron/fiveM');
-const LastFMController = require('../controllers/cron/lastfm');
-const SteamController = require('../controllers/cron/steam');
-//const db = require("../config/db");
 
-const syncTasks = async () => {
-	let tasks = await cronTaskModel.getAll();
-	for (let task of tasks) {
-		syncTaskToEnabledFlag(task);
-	}
+// This script is for setting up default CRON tasks.
+// a CRON task is only added to the database through this script if it does not exist already, based on it's cmd.
+
+const steam_playerSummary = {
+	module: 'Steam',
+	title: 'Player Summary',
+	desc: 'Controls synchronization of Steam Player Information',
+	cmd: 'steam_syncPlayerSymmary',
+	data: {}, // TODO, will allow for multiple accounts to be synchronised independantly.
+	exp: '*/60 * * * * *',
+	enabled: false, // do NOT automatically enable this task
 };
 
-const syncTaskToEnabledFlag = (task) => {
-	if (!manager.exists(task._id.toString())) {
-		createTask(task);
-		return;
-	}
-	let id = task._id.toString();
-	let running = manager.jobs[id].running || false;
-	let enabled = task.enabled;
-	if (running == false && enabled == true) {
-		manager.jobs[id].start();
-		console.log(`CRON Task ${task.name} Started.`);
-	}
-	if (running == true && enabled == false) {
-		manager.jobs[id].stop();
-		console.log(`CRON Task ${task.name} Stopped.`);
-	}
+const steam_recentGames = {
+	module: 'Steam',
+	title: 'Recent Games',
+	desc: "Controls syncronization of your steam account's recently played games",
+	cmd: 'steam_syncRecentGames',
+	data: {},
+	exp: '*/60 * * * * *',
+	enabled: false,
 };
 
-const createTask = async (task) => {
-	if (task.cmd == 'pingFiveMServers') {
-		FiveMController.resetReadyFlags();
-		manager.add(task._id.toString(), task.exp, function () {
-			FiveMController.pingFiveMServers();
-		});
-		console.log(`CRON Task ${task.name} has been created. (${task.cmd})`);
-	}
-	if (task.cmd == 'syncTopWeeklyTracks') {
-		manager.add(task._id.toString(), task.exp, function () {
-			LastFMController.syncTopWeeklyTracks();
-		});
-	}
-	if (task.cmd == 'syncCurrentlyPlaying') {
-		manager.add(task._id.toString(), task.exp, function () {
-			LastFMController.syncCurrentlyPlaying();
-		});
-	}
-	if (task.cmd == 'syncSteamPlayerSummary') {
-		manager.add(task._id.toString(), task.exp, function () {
-			SteamController.syncUserSummary();
-		});
-	}
-	if (task.cmd == 'syncSteamRecentGames') {
-		manager.add(task._id.toString(), task.exp, function () {
-			SteamController.syncUserRecentGames();
-		});
-	}
+const spotify_nowPlaying = {
+	module: 'Spotify',
+	title: 'Now Playing',
+	desc: "Controls synchonization of your Spotify API's currently playing song.",
+	cmd: 'spotify_syncNowplaying',
+	data: {},
+	exp: '*/5 * * * * *',
+	enabled: false,
 };
 
-let manager = new CronJobManager('head', '* * * * * *', syncTasks, {
-	// Create a Head CRON to run all other jobs
-	start: true,
-});
+const spotify_topTracks = {
+	module: 'Spotify',
+	title: 'Top Tracks',
+	desc: "Controls synchronization of your Spotify API's Top Tracks.",
+	cmd: 'spotify_syncTopTracks',
+	data: {},
+	exp: '*/60 * * * * *',
+	enabled: false,
+};
 
-module.exports = manager;
+const defaultCrons = [
+	steam_playerSummary,
+	steam_recentGames,
+	spotify_nowPlaying,
+	spotify_topTracks,
+];
+
+module.exports.setup = () => {
+	defaultCrons.forEach(async (cron) => {
+		const task = await cronTaskModel.findOne({ cmd: cron.cmd });
+		if (!task) {
+			new cronTaskModel(cron).save();
+			console.log(
+				`Default Task [${cron.module}] ${cron.title} was not detected. This may be because the database entry was cleared. This has been rectified.`
+			);
+		}
+	});
+};

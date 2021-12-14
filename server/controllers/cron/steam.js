@@ -45,7 +45,6 @@ module.exports.syncUserSummary = async () => {
 		.exec();
 	if (steamPlayerSummary.gameID) {
 		const gameDetails = await getGameDetails(steamPlayerSummary.gameID);
-		console.log(`Playing: ${gameDetails.name}`);
 		gameModel
 			.findOneAndUpdate(
 				{ appID: gameDetails.steam_appid },
