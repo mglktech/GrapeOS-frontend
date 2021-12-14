@@ -3,6 +3,7 @@ const router = express.Router();
 const shortcuts = require('../models/shortcut-model');
 const files = require('../models/file-model');
 const users = require('../models/user-model');
+const crons = require('../models/crontask-model');
 const games = require('../models/steamgame-model');
 const controller = require('../controllers/top');
 router.get('/', controller.loadMain);
@@ -10,12 +11,14 @@ router.get('/', controller.loadMain);
 // 	res.render("pages/welcome");
 // });
 router.get('/login', (req, res) => res.render('pages/loginPreSplash'));
-router.get('/admin', (req, res) => {
+router.get('/admin', async (req, res) => {
 	if (req.isAuthenticated() && req.user.admin) {
-		res.render('pages/admin');
+		// Collect CRON info and send it to the page
+		const cronTasks = await crons.find();
+		res.render('pages/admin', { cronTasks });
 		return;
 	}
-	res.sendStatus(404);
+	res.render('pages/noAccess');
 });
 
 router.get('/home', async (req, res) => {

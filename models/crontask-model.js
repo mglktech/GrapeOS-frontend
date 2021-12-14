@@ -36,9 +36,8 @@ model.toggle = async (_id) => {
 		if (cron.enabled == false) {
 			//activity.finishAll(cron.data.get("id"));
 		}
-		cron.save();
+		await cron.save();
 	}
-	return cron.data.id;
 };
 
 model.add = (cron) => {

@@ -7,8 +7,93 @@
 
 <body>
   <%- include("../partials/v3/navbar")%>
-  <h1>Admin Page</h1>
-  <script src="/v3/assets/bootstrap/js/bootstrap.min.js"></script>
+  <%console.log(cronTasks)%>
+  <div class="container my-2">
+    <div class="row">
+      <div class="col style-panel visually-hidden">
+        <div class="row">
+          <div class="col-2"><img class="img-fluid" src="assets/img/Discord-Logo-Color.svg"></div>
+          <div class="col">
+            <div>
+              <h5 class="m-0">Discord</h5><span class="text-secondary">Featured Guilds<br></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 style-panel">
+        <div class="row">
+          <div class="col d-flex align-items-start p-1 mb-2"><img class="img-fluid px-2" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" style="width: 3.5rem;">
+            <h5 class="m-0">Steam</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <%cronTasks.forEach(task => {%>
+            <%if(task.module == "Steam") {%>
+            <div class="card bg-dark border-secondary p-1 m-1">
+              <div class="card-header">
+                <h5 class="mb-0"><%=task.title%></h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-8"><span class="text-secondary">Timing Expression</span>
+                    <div class="input-group input-group-sm"><input class="form-control" type="text" value="<%=task.exp%>"><button class="btn btn-primary disabled" type="button" disabled="">Save</button></div>
+                  </div>
+                  <div class="col d-flex justify-content-end align-items-end">
+                    <%if(task.enabled) {%>
+                    <a class="btn btn-success btn-sm" href="/api/tasks/toggle/<%=task._id%>" role="button">Sync Enabled</a>
+                    <%}%>
+                      <%if(!task.enabled) {%>
+                    <a class="btn btn-danger btn-sm" href="/api/tasks/toggle/<%=task._id%>" role="button">Sync Disabled</a>
+                    <%}%>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <%}%>
+                    <%})%>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mx-auto style-panel">
+                <div class="row">
+                  <div class="col d-flex justify-content-start align-items-center p-1"><i class="fa fa-spotify text-success px-2" style="font-size: 3rem;"></i>
+                    <h5 class="m-0">Spotify</h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <%cronTasks.forEach(task => {%>
+                    <%if(task.module == "Spotify") {%>
+                    <div class="card bg-dark border-secondary p-1 m-1">
+                      <div class="card-header">
+                        <h5 class="mb-0"><%=task.title%></h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-8"><span class="text-secondary">Timing Expression</span>
+                            <div class="input-group input-group-sm"><input class="form-control" type="text" value="<%=task.exp%>"><button class="btn btn-primary disabled" type="button" disabled="">Save</button></div>
+                          </div>
+                          <div class="col d-flex justify-content-end align-items-end">
+                            <%if(task.enabled) {%>
+                            <a class="btn btn-success btn-sm" href="/api/tasks/toggle/<%=task._id%>" role="button">Sync Enabled</a>
+                            <%}%>
+                      <%if(!task.enabled) {%>
+                            <a class="btn btn-danger btn-sm" href="/api/tasks/toggle/<%=task._id%>" role="button">Sync Disabled</a>
+                            <%}%>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <%}%>
+                            <%})%>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <script src="/v3/assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>

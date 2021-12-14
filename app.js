@@ -50,11 +50,11 @@ const use = (fn) => (req, res, next) => {
 app.use('/', use(require('./routes/top')));
 //app.use("/public", require("./routes/public"));
 //app.use("/account", require("./routes/account"));
-app.use('/apps', use(require('./routes/apps')));
+//app.use('/apps', use(require('./routes/apps')));
 app.use('/auth', use(require('./routes/auth')));
 app.use('/api', use(require('./routes/api')));
 //app.use("/articles", require("./routes/articles"));
-app.use('/bin', use(require('./routes/bin')));
+//app.use('/bin', use(require('./routes/bin')));
 //app.use("/protected", require("./routes/protected"));
 //app.use("/projects", require("./routes/projects"));
 //app.use("/demos", require("./routes/demos"));
