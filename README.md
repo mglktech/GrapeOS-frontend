@@ -1,3 +1,3 @@
 # GrapeOS-frontend
 
-For the Clients!
+a Public build for a Personal site.

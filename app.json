@@ -1,8 +1,8 @@
 {
-  "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
-  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
-  "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs"
+  "name": "mglktech",
+  "description": "Build 0.4.0",
+  "repository": "https://github.com/mglktech/GrapeOS-frontend",
+  "logo": "https://github.com/mglktech/GrapeOS-frontend/blob/main/public/favicon.ico",
+  "keywords": ["node", "express", "heroku", "mongodb", "bootstrap"],
+  "image": ""
 }
