@@ -1,6 +1,7 @@
 const lastfmclient = require('lastfm-node-client');
 const lastfm = new lastfmclient(process.env.lastfm_api_key);
 const userModel = require('../../../models/user-model');
+const musicTrackModel = require('../../../models/music-track-model');
 
 const getRecentTrack = () => {
 	return lastfm
@@ -18,7 +19,10 @@ const GetWeeklyTrackChart = () => {
 			user: process.env.lastfm_user,
 			limit: 10,
 		})
-		.then((data) => data.weeklytrackchart)
+		.then((data) => {
+			//console.log(data.weeklytrackchart);
+			return data.weeklytrackchart;
+		})
 		.catch((err) => console.log(`LastFM API Error: ${err}`));
 };
 
@@ -33,6 +37,11 @@ module.exports.syncCurrentlyPlaying = async () => {
 	let lastfmRecentTrack = recentTrack.track[0];
 	//console.log(lastfmRecentTrack);
 	//const user = await userModel.find({ lastfmUser });
+	musicTrackModel
+		.findOneAndUpdate({ mbid: lastfmRecentTrack.mbid }, lastfmRecentTrack, {
+			upsert: true,
+		})
+		.exec();
 	userModel.findOneAndUpdate({ lastfmUser }, { lastfmRecentTrack }).exec();
 };
 
@@ -42,6 +51,18 @@ module.exports.syncTopWeeklyTracks = async () => {
 	let lastfmUser = weeklyTrackChart['@attr'].user;
 	//console.log(lastfmUser);
 	let lastfmWeeklyTrackChart = weeklyTrackChart.track;
+	for (const [k, v] of weeklyTrackChart.track.entries()) {
+		// LastFM fills image array with placeholders. This loop collects images from my database instead.
+		//console.log(v);
+		const foundTrack = await musicTrackModel
+			.findOne({ mbid: v.mbid }, 'image')
+			.lean();
+		if (foundTrack) {
+			//console.log(foundTrack);
+			lastfmWeeklyTrackChart[k].image = foundTrack.image;
+		}
+	}
+	// take this lastfmWeeklyTrackChart apart, replace image array with found song in database
 	//console.log(lastfmWeeklyTrackChart);
 	userModel.findOneAndUpdate({ lastfmUser }, { lastfmWeeklyTrackChart }).exec();
 };
