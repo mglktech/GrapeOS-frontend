@@ -86,50 +86,53 @@
 
 
       </div>
-      <div class="col mx-auto style-panel">
-        <div class="row">
-          <div class="col d-flex justify-content-start align-items-center p-1"><i class="fa fa-spotify text-success px-2" style="font-size: 3rem;"></i>
-            <div>
-              <h5 class="m-0">Spotify</h5><span id="txtPlaying" class="text-secondary">Currently Playing<br></span>
+      <div class="col mx-auto">
+        <div class="row style-panel">
+          <div class="col">
+            <div class="row bg-tint">
+              <div class="col-4 d-flex align-items-center p-2"><img class="img-fluid" src="/v3/assets/img/Spotify_Logo_RGB_White.png"></div>
+              <div class="col d-flex justify-content-start align-items-center p-1"><span id="txtPlaying" class="text-secondary"></span></div>
             </div>
+            <a id="tracklink" target="_blank">
+              <div class="row my-2 p-2">
+                <div class="col-4 d-flex justify-content-center"><img class="rounded img-fluid shadow" id="trackart" src="/v3/assets/img/forever_alone_music_note.png"></div>
+                <div class="col d-flex flex-column justify-content-center"><span id="tracktitle" class="text-light fw-bold" href="#">...</span><span id="trackartist" class="text-secondary fw-light" href="#">...</span></div>
+              </div>
+            </a>
           </div>
         </div>
-        <a id="tracklink" target="_blank">
-          <div class="row my-2">
-
-            <div class="col-4 d-flex justify-content-center"><img class="rounded img-fluid shadow" id="trackart" src="/v3/assets/img/forever_alone_music_note.png"></div>
-            <div class="col d-flex flex-column justify-content-center"><span id="tracktitle" class="text-light fw-bold" href="#">...</span><span id="trackartist" class="text-secondary fw-light" href="#">...</span></div>
-
-          </div>
-        </a>
-        <div class="row">
-          <div class="col d-flex p-1">
-            <div class="d-flex justify-content-center align-items-center rounded shadow mx-2" style="width: 3rem;height: 3rem;padding: 0.5rem;background: rgb(88,16,16);margin-right: 0px;"><img class="img-fluid" src="https://www.last.fm/static/images/footer_logo@2x.49ca51948b0a.png"></div>
-            <div>
-              <h5 class="m-0">last.fm</h5><span class="text-secondary">Top Tracks<br></span>
+        <div class="row style-panel">
+          <div class="col">
+            <div class="row p-2 bg-tint">
+              <div class="col d-flex p-1">
+                <div class="d-flex justify-content-center align-items-center rounded shadow mx-2" style="width: 3rem;height: 3rem;padding: 0.5rem;background: rgb(88,16,16);margin-right: 0px;"><img class="img-fluid" src="https://www.last.fm/static/images/footer_logo@2x.49ca51948b0a.png"></div>
+                <div>
+                  <h5 class="m-0">last.fm</h5><span class="text-secondary">Top Tracks<br></span>
+                </div>
+              </div>
             </div>
+            <%lastfmWeeklyTrackChart.forEach(track => {%>
+            <a target="_blank" href="<%=track.url%>">
+              <div class="row m-2 p-2 bg-tint">
+                <div class="col-1 d-flex justify-content-center align-items-center">
+                  <span class="text-light fw-bold">#<%=track["@attr"].rank%></span>
+                </div>
+                <div class="col-3 d-inline-flex justify-content-center align-items-center">
+                  <img class="rounded img-fluid img-fluid shadow" src="<%=track.image[2]['#text'];%>">
+                </div>
+                <div class="col-6 d-flex flex-column justify-content-center">
+                  <span class="text-light fw-bold"><%=track.name%></span>
+                  <span class="text-secondary fw-light"><%=track.artist['#text']%></span>
+                  <span class="text-secondary fw-light">Play Count: <%=track.playcount%></span>
+                </div>
+              </div>
+            </a>
+            <%});%>
+            <footer class="d-flex justify-content-end">
+              <label class="form-label" style="color: rgba(248,249,250,0.36);text-align: right;font-size: 0.8rem;">Data provided by last.fm with Spotify Connect</label>
+            </footer>
           </div>
         </div>
-        <%lastfmWeeklyTrackChart.forEach(track => {%>
-        <a target="_blank" href="<%=track.url%>">
-          <div class="row m-2">
-            <div class="col-1 d-flex justify-content-center align-items-center">
-              <span class="text-light fw-bold">#<%=track["@attr"].rank%></span>
-            </div>
-            <div class="col-3 d-inline-flex justify-content-center align-items-center">
-              <img class="rounded img-fluid img-fluid shadow" src="<%=track.image[2]['#text'];%>">
-            </div>
-            <div class="col-6 d-flex flex-column justify-content-center">
-              <span class="text-light fw-bold"><%=track.name%></span>
-              <span class="text-secondary fw-light"><%=track.artist['#text']%></span>
-              <span class="text-secondary fw-light">Play Count: <%=track.playcount%></span>
-            </div>
-          </div>
-        </a>
-        <%});%>
-        <footer class="d-flex justify-content-end">
-          <label class="form-label" style="color: rgba(248,249,250,0.36);text-align: right;font-size: 0.8rem;">Data provided by last.fm with Spotify Connect</label>
-        </footer>
       </div>
     </div>
   </div>
