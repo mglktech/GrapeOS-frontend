@@ -19,57 +19,70 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 style-panel">
-        <div class="row">
-          <div class="col d-flex align-items-start p-1 mb-2"><img class="img-fluid px-2" src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" style="width: 3.5rem;">
-            <h5 class="m-0">Steam</h5>
-          </div>
-          <div class="col">
+
+      <div class="col-lg-6 style-panel rounded overflow-hidden">
+        <div class="row bg-tint">
+          <div class="col-4 d-flex align-items-center p-1"><img class="img-fluid px-2 py-1" src="v3/assets/img/steam-logo.png" style="opacity: 0.60;"></div>
+          <div class="col p-0">
             <div>
-              <div class="d-flex flex-row justify-content-end p-2">
-                <div class="d-flex flex-column align-items-end p-2"><span class="d-flex text-info" id="steam-nickname">Pwnstar64</span><span class="d-flex text-info" id="steam-onlinestate">Online</span></div><img class="rounded img-fluid shadow" id="steam-profile-picture" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/6b/6ba1eb3aff7176583889ec2acb10b5e3632f8f66_medium.jpg">
+              <div class="d-flex flex-row justify-content-end">
+                <div class="d-flex flex-column align-items-end p-2"><span class="d-flex text-info" id="steam-nickname">...</span><span class="d-flex text-info" id="steam-onlinestate"></span></div><img class="rounded img-fluid shadow" id="steam-profile-picture" src="">
               </div>
             </div>
           </div>
         </div>
-
-        <div id="row-steamCurrentlyPlaying" class="row visually-hidden">
-          <div class="col d-flex flex-column"><span class="text-secondary">Currently Playing<br></span><img id="steam-playing-splash" class="rounded shadow" src="https://cdn.akamai.steamstatic.com/steam/apps/892970/header.jpg?t=1639060647">
-            <div class="m-2">
-              <h5 id="steam-playing-title" class="m-0">Valheim</h5><span id="steam-playing-author" class="text-secondary">Iron Gate AB<br></span>
-              <div class="d-flex flex-row flex-wrap" id="steam-playing-genres"><span class="span-game-genre">Action</span><span class="span-game-genre">Adventure</span><span class="span-game-genre">Indie</span><span class="span-game-genre">RPG</span><span class="span-game-genre">Early Access</span></div>
+        <div class="row visually-hidden" id="row-steamCurrentlyPlaying">
+          <a id="game-link" href="">
+            <div class="col d-flex flex-column pt-2"><span class="text-white-50 bg-success mt-2 mx-2 p-1" style="border-top-left-radius: 4px;border-top-right-radius: 4px;">Currently Playing<br></span>
+              <div class="row mx-2 bg-tint border border-success" style="border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;">
+                <div class="col">
+                  <div class="row">
+                    <div class="col p-0"><img class="img-fluid" id="steam-playing-splash" src="" width="100%"></div>
+                  </div>
+                  <div class="row">
+                    <div class="col p-2">
+                      <h5 id="steam-playing-title" class="m-0 text-white"></h5><span id="steam-playing-author" class="text-secondary"><br></span>
+                      <div class="d-flex flex-row flex-wrap" id="steam-playing-genres"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </a>
         </div>
         <div class="row">
-          <div class="col d-flex align-items-center px-3 my-2">
-            <div>
+          <div class="col p-0">
+            <hr>
+            <div class="px-2">
               <h6 class="m-0">Recently Played</h6><span class="text-secondary" style="font-size: 14px;">Over the past 2 weeks<br></span>
             </div>
           </div>
         </div>
 
         <% steamRecentGames.forEach((game, index) => {%>
-        <div class="row my-2 mx-2">
-          <div class="col-2 align-self-center"><a class="text-light fw-bold" href="#">#<%=index + 1%></a>
-          </div>
-          <div class="col d-flex flex-column justify-content-center">
-            <div class="row">
-              <div class="col">
-                <img class="img-fluid rounded shadow" src="<%=game.gameDetails.header_image%>">
-                <div>
-                  <h5 class="m-0"><%=game.gameDetails.name%></h5>
-                  <span class="text-secondary"><%=game.gameDetails.developers[0]%></span>
+        <%console.log(game)%>
+        <a target="_blank" href="https://store.steampowered.com/app/<%=game.game.appID%>">
+          <div class="row my-2 mx-2 rounded bg-tint shadow">
+            <div class="col">
+              <div class="row">
+                <div class="col p-0"><img class="rounded img-fluid" src="<%=game.gameInfo.gameDetails.header_image%>" width="100%"></div>
+              </div>
+              <div class="row">
+                <div class="col p-2">
+                  <h5 class="m-0 text-white"><%=game.gameInfo.gameDetails.name%></h5><span class="text-secondary"><%=game.gameInfo.gameDetails.developers[0]%><br></span>
                   <div class="d-flex flex-row flex-wrap">
-                    <%game.gameDetails.genres.forEach(genre => {%>
+                    <%game.gameInfo.gameDetails.genres.forEach(genre => {%>
                     <span class="span-game-genre"><%=genre.description%></span>
                     <%})%>
                   </div>
+                  <div><span class="text-secondary"><%=((game.game.playTime2 / 60) + 1).toFixed(0)%></span><span class="text-secondary px-1">hours over past two weeks</span></div>
+                  <div><span class="text-secondary"><%=((game.game.playTime / 60) + 1).toFixed(0)%></span><span class="text-secondary px-1">hours in total</span></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </a>
+        <hr>
         <% }); %>
 
 

@@ -43,11 +43,11 @@ const info = (steamID, infoType) => {
 						const gameInfo = await games
 							.findOne(
 								{ appID: game.appID },
-								'gameDetails.header_image gameDetails.name gameDetails.developers gameDetails.genres'
+								'gameDetails.header_image gameDetails.name gameDetails.developers gameDetails.genres gameDetails.steam_appid'
 							)
 							.lean();
 						if (gameInfo) {
-							recentGames.push(gameInfo);
+							recentGames.push({ game, gameInfo });
 						}
 					}
 				}

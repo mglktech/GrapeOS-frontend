@@ -14,6 +14,7 @@
     title: document.querySelector("#steam-playing-title"),
     author: document.querySelector("#steam-playing-author"),
     genres: document.querySelector("#steam-playing-genres"),
+    link: document.querySelector("#game-link"),
   }
   const updateSpotifyWidget = (streamData) => {
     const doNowPlaying = (data) => { // when a song is being played, the API includes an @attr field with nowplaying set to true. This function takes advantage of this.
@@ -62,9 +63,10 @@
 
     }
     steamWidget.onlineState.innerHTML = parseOnlineState(playerSummary.personaState);
-    const doNowPlayingGame = (game) => {
+    const doNowPlayingGame = (game, gameID) => {
       if (game) {
         steamWidget.row.classList.remove("visually-hidden");
+        steamWidget.link.href = `https://store.steampowered.com/app/${gameID}`;
         steamWidget.img.src = game.gameDetails.header_image;
         steamWidget.title.innerHTML = game.gameDetails.name;
         steamWidget.author.innerHTML = game.gameDetails.developers[0];
@@ -82,7 +84,7 @@
         steamWidget.row.classList.add("visually-hidden");
       }
     }
-    doNowPlayingGame(playerSummary.game || null);
+    doNowPlayingGame(playerSummary.game, playerSummary.gameID || null);
 
   }
   const fetchStreamData = () => {
