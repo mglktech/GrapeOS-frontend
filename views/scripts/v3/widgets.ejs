@@ -1,5 +1,6 @@
 <script>
   const spotifyWidget = {
+    trackLink: document.querySelector("#tracklink"),
     trackArt: document.querySelector("#trackart"),
     playing: document.querySelector("#txtPlaying"),
     trackTitle: document.querySelector("#tracktitle"),
@@ -27,11 +28,12 @@
       spotifyWidget.playing.innerHTML = "Recently Played";
     }
     doNowPlaying(streamData);
+    spotifyWidget.trackLink.href = streamData.spotify_recentlyPlayed.url;
     spotifyWidget.trackArt.src = streamData.spotify_recentlyPlayed.image[2]['#text'];
     spotifyWidget.trackTitle.innerHTML = streamData.spotify_recentlyPlayed.name;
-    spotifyWidget.trackTitle.href = streamData.spotify_recentlyPlayed.url;
+    //spotifyWidget.trackTitle.href = streamData.spotify_recentlyPlayed.url;
     spotifyWidget.trackArtist.innerHTML = streamData.spotify_recentlyPlayed.artist["#text"];
-    spotifyWidget.trackArtist.href = streamData.spotify_recentlyPlayed.url;
+    //spotifyWidget.trackArtist.href = streamData.spotify_recentlyPlayed.url;
   }
   const updateSteamWidget = (streamData) => {
     const playerSummary = streamData.steam_playerSummary;
