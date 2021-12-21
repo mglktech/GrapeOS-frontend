@@ -2,10 +2,19 @@ const cronTaskModel = require('../../models/crontask-model');
 
 // This script is for setting up default CRON tasks.
 // a CRON task is only added to the database through this script if it does not exist already, based on it's cmd.
+const xbl_playerSummary = {
+	module: 'Microsoft',
+	title: 'Xbox Player Summary',
+	cmd: 'xbl_syncPlayerSummary',
+	desc: 'Controls Sync of XBox Player summary collection',
+	data: {},
+	exp: '*/60 * * * * *',
+	enabled: true,
+};
 
 const steam_playerSummary = {
 	module: 'Steam',
-	title: 'Player Summary',
+	title: 'Steam Player Summary',
 	desc: 'Controls synchronization of Steam Player Information',
 	cmd: 'steam_syncPlayerSymmary',
 	data: {}, // TODO, will allow for multiple accounts to be synchronised independantly.
@@ -44,6 +53,7 @@ const spotify_topTracks = {
 };
 
 const defaultCrons = [
+	xbl_playerSummary,
 	steam_playerSummary,
 	steam_recentGames,
 	spotify_nowPlaying,

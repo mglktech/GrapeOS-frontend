@@ -3,6 +3,7 @@ const cronTaskModel = require('../../models/crontask-model');
 const FiveMController = require('./cron/fiveM');
 const LastFMController = require('./cron/lastfm');
 const SteamController = require('./cron/steam');
+const xblController = require('./cron/xbox');
 //const db = require("../config/db");
 
 const syncTasks = async () => {
@@ -37,6 +38,11 @@ const createTask = async (task) => {
 	// 		FiveMController.pingFiveMServers();
 	// 	});
 	// }
+	if (task.cmd == 'xbl_syncPlayerSummary') {
+		manager.add(task._id.toString(), task.exp, function () {
+			xblController.syncPlayerSummary();
+		});
+	}
 	if (task.cmd == 'spotify_syncTopTracks') {
 		manager.add(task._id.toString(), task.exp, function () {
 			LastFMController.syncTopWeeklyTracks();

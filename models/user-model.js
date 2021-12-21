@@ -41,6 +41,8 @@ const userSchema = new Schema(
 		steamID: String,
 		steamPlayerSummary: {},
 		steamRecentGames: [],
+		xuid: String,
+		xboxPlayerSummary: {},
 	},
 	{
 		timestamps: true,
