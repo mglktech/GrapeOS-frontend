@@ -5,7 +5,6 @@ require('../config/db');
 cronConfig.setup();
 require('./controllers/cron.js'); // Start running CRON tasks
 require('dotenv').config();
-
 //client.getPlayerSummaries().then((result) => console.log(result));
 //client.GetOwnedGames().then((result) => console.log(result));
 //client.GetRecentlyPlayedGames().then((result) => console.log(result));

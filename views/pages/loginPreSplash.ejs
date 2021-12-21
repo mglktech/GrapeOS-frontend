@@ -2,26 +2,28 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head")%>
+  <%- include("../partials/v3/head")%>
 </head>
 
 <body>
-  <%- include("../partials/NavBar")%>
+  <%- include("../partials/v3/navbar")%>
   <!-- Body Content -->
-  <div>
-    <div class="container border rounded border-dark shadow bg-bs-dark my-3 text-light">
-      <div class="row">
-        <div class="col">
-          <div class="d-flex justify-content-center"><img class="img-fluid px-2" src="assets/img/bi_discord.svg" style="width: 3.5rem;">
-            <h1 class="text-center m-2 fw-bold">Hold up...</h1>
-          </div>
-          <p class="text-center m-2 fst-italic">The Login process is intended for site administrators only. It uses OAuth2 with Discord to determine this.<br>If you are not a site administrator, you do not need to login.</p>
-        </div>
+  <div class="container bg-dark border rounded border-light shadow p-2 mt-2">
+    <div class="row">
+      <div class="col d-flex justify-content-center"><img class="img-fluid px-2" src="/v3/assets/img/Discord-Logo-Color.svg" style="width: 3.5rem;">
+        <h1 class="text-center m-2 fw-bold">Hold up...</h1>
       </div>
-      <div class="row p-4">
-        <div class="col d-flex justify-content-center"><a class="btn btn-secondary" type="button" href="/">Go back</a></div>
-        <div class="col d-flex justify-content-center"><a class="btn btn-primary" type="button" href="/auth/discord/login">Continue</a></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p class="lead text-center">The Login process is intended for site administrators only.</p>
+        <p class="text-center">It uses your Discord credentials to determine your site access and privileges.<br></p>
+        <p class="text-center">If you are not a site administrator, you do not need to login.</p>
       </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex justify-content-center"><a class="btn btn-secondary btn-sm" role="button" href="/">Get me out of here!</a></div>
+      <div class="col d-flex justify-content-center"><a class="btn btn-primary btn-sm" role="button" href="/auth/discord/login">Login with Discord</a></div>
     </div>
   </div>
   <%- include("../scripts/defaultScripts")%>

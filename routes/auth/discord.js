@@ -40,7 +40,9 @@ router.get('/doLogin', (req, res) => {
 // 	res.redirect('/home');
 // }); // The users' Discord information is stored by the Strategy, not the redirect.
 router.get('/logout', (req, res) => {
-	console.log(`[Discord]: User ${req.user.discord.username} has logged out.`);
+	if (req.user) {
+		console.log(`[Discord]: User ${req.user.discord.username} has logged out.`);
+	}
 	req.logout();
 	res.redirect('/');
 });
