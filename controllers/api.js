@@ -20,6 +20,11 @@ const info = (steamID, infoType) => {
 			}
 			const game = await userGame(userData.steamPlayerSummary.gameID);
 			return {
+				xbl_playerSummary: {
+					gamertag: userData.xboxPlayerSummary.gamertag,
+					presenceState: userData.xboxPlayerSummary.presenceState,
+					presenceText: userData.xboxPlayerSummary.presenceText,
+				},
 				steam_playerSummary: {
 					avatar: userData.steamPlayerSummary.avatar,
 					url: userData.steamPlayerSummary.url,
@@ -39,7 +44,7 @@ const info = (steamID, infoType) => {
 			.then(async (userData) => {
 				let recentGames = [];
 				if (userData.steamRecentGames) {
-					for await (game of userData.steamRecentGames) {
+					for await (let game of userData.steamRecentGames) {
 						const gameInfo = await games
 							.findOne(
 								{ appID: game.appID },
@@ -55,13 +60,15 @@ const info = (steamID, infoType) => {
 					lastfmWeeklyTrackChart: userData.lastfmWeeklyTrackChart,
 					steamRecentGames: recentGames,
 				};
+			})
+			.catch((err) => {
+				console.log(err);
 			});
 	}
 };
 
-module.exports.getInfoMain_stream = async (req, res) => {
-	const data = await info(steamid, 'stream');
-	res.json(data);
+module.exports.getInfoMain_stream = () => {
+	return info(steamid, 'stream');
 };
 
 module.exports.getInfoMain = () => {
