@@ -64,7 +64,13 @@ module.exports.syncUserRecentGames = async () => {
 	}
 	steamRecentGames.forEach(async (game) => {
 		// find it/add it to steam-games
+		if (game.appID === 218) {
+			return;
+		} // Temporary fix for Source SDK Base 2007 (Gta 5 / FiveM / Other modded game builds)
 		const gameDetails = await getGameDetails(game.appID);
+		if (!gameDetails) {
+			return;
+		}
 		const document = {
 			appID: game.appID,
 			logoURL: game.logoURL,
